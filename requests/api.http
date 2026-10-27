@@ -1,0 +1,221 @@
+@baseUrl = http://localhost:8080
+@contentType = application/json
+
+### 1. Получить всех пользователей (пустой список в начале)
+GET {{baseUrl}}/api/users
+Accept: {{contentType}}
+
+
+### 2. Создать пользователя #1 (автор постов)
+POST {{baseUrl}}/api/users
+Content-Type: {{contentType}}
+
+{
+  "firstName": "Ivan",
+  "lastName": "Petrov",
+  "email": "ivan@example.com",
+  "password": "secret123"
+}
+
+
+### 3. Создать пользователя #2 (комментатор)
+POST {{baseUrl}}/api/users
+Content-Type: {{contentType}}
+
+{
+  "firstName": "Maria",
+  "lastName": "Sidorova",
+  "email": "maria@example.com",
+  "password": "secret456"
+}
+
+
+### 4. Получить пользователя по id
+GET {{baseUrl}}/api/users/1
+Accept: {{contentType}}
+
+
+### 5. Получить всех пользователей (теперь их 2)
+GET {{baseUrl}}/api/users
+Accept: {{contentType}}
+
+
+### 6. Обновить пользователя (частичное обновление через JsonNullable)
+PUT {{baseUrl}}/api/users/1
+Content-Type: {{contentType}}
+
+{
+  "firstName": "Ioann"
+}
+
+
+### 7. Проверить, что только firstName изменилось
+GET {{baseUrl}}/api/users/1
+Accept: {{contentType}}
+
+
+### 8. Негативный тест: получить несуществующего пользователя (404)
+GET {{baseUrl}}/api/users/9999
+Accept: {{contentType}}
+
+
+### 9. Получить все посты (пустой список в начале)
+GET {{baseUrl}}/api/posts
+Accept: {{contentType}}
+
+
+### 10. Создать пост #1 (автор — user 1)
+POST {{baseUrl}}/api/posts
+Content-Type: {{contentType}}
+
+{
+  "authorId": 1,
+  "slug": "first-post",
+  "name": "Мой первый пост",
+  "body": "Привет, мир! Это тело первого поста."
+}
+
+
+### 11. Создать пост #2 (другой слаг)
+POST {{baseUrl}}/api/posts
+Content-Type: {{contentType}}
+
+{
+  "authorId": 2,
+  "slug": "second-post",
+  "name": "Второй пост",
+  "body": "Текст второго поста."
+}
+
+
+### 12. Получить пост по id
+GET {{baseUrl}}/api/posts/1
+Accept: {{contentType}}
+
+
+### 13. Получить все посты (теперь 2)
+GET {{baseUrl}}/api/posts
+Accept: {{contentType}}
+
+
+### 14. Обновить только name поста (проверка JsonNullable)
+PUT {{baseUrl}}/api/posts/1
+Content-Type: {{contentType}}
+
+{
+  "name": "Обновлённое название"
+}
+
+
+### 15. Проверить: name изменилось, slug и body — нет
+GET {{baseUrl}}/api/posts/1
+Accept: {{contentType}}
+
+
+### 16. Обновить несколько полей сразу
+PUT {{baseUrl}}/api/posts/1
+Content-Type: {{contentType}}
+
+{
+  "name": "Ещё раз обновлено",
+  "body": "Новое тело поста."
+}
+
+
+### 17. Негативный тест: 404 для несуществующего поста
+GET {{baseUrl}}/api/posts/9999
+Accept: {{contentType}}
+
+
+### 18. Получить все комментарии
+GET {{baseUrl}}/api/comments
+Accept: {{contentType}}
+
+
+### 19. Создать комментарий к посту #1 от user #2
+POST {{baseUrl}}/api/comments
+Content-Type: {{contentType}}
+
+{
+  "postId": 1,
+  "authorId": 2,
+  "body": "Отличный пост, спасибо!"
+}
+
+
+### 20. Создать второй комментарий к посту #1 от user #1
+POST {{baseUrl}}/api/comments
+Content-Type: {{contentType}}
+
+{
+  "postId": 1,
+  "authorId": 1,
+  "body": "Спасибо за отзыв!"
+}
+
+
+### 21. Получить комментарий по id
+GET {{baseUrl}}/api/comments/1
+Accept: {{contentType}}
+
+
+### 22. Получить все комментарии
+GET {{baseUrl}}/api/comments
+Accept: {{contentType}}
+
+
+### 23. Получить все комментарии конкретного поста (кастомный метод репозитория)
+GET {{baseUrl}}/api/posts/1/comments
+Accept: {{contentType}}
+
+
+### 24. Обновить комментарий (частичное обновление)
+PUT {{baseUrl}}/api/comments/1
+Content-Type: {{contentType}}
+
+{
+  "body": "Обновлённый текст комментария."
+}
+
+
+### 25. Проверить, что только body изменилось
+GET {{baseUrl}}/api/comments/1
+Accept: {{contentType}}
+
+
+### 26. Удалить комментарий
+DELETE {{baseUrl}}/api/comments/1
+
+
+### 27. Убедиться, что комментарий удалён (404)
+GET {{baseUrl}}/api/comments/1
+Accept: {{contentType}}
+
+
+### 28. Удалить пост #2
+DELETE {{baseUrl}}/api/posts/2
+
+
+### 29. Удалить пост #1 (вместе с его комментариями)
+DELETE {{baseUrl}}/api/posts/1
+
+
+### 30. Удалить пользователя #2
+DELETE {{baseUrl}}/api/users/2
+
+
+### 31. Удалить пользователя #1
+DELETE {{baseUrl}}/api/users/1
+
+
+### 32. Финальная проверка: все списки пусты
+GET {{baseUrl}}/api/users
+Accept: {{contentType}}
+
+###
+GET {{baseUrl}}/api/posts
+Accept: {{contentType}}
+
+###
+GET {{baseUrl}}/api/comments
+Accept: {{contentType}}
